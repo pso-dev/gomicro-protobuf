@@ -1,0 +1,63 @@
+syntax="proto3";
+
+option go_package="github.com/pso-dev/gomicro-protobuf/pb";
+
+package pb;
+
+message Resource {
+    int64 id = 1;
+    string name = 2;
+    string email = 3;
+    string jobTitle = 4;
+    string workgroup = 5;
+    string employmentType = 6;
+    string manager = 7;
+    bool active = 8;
+}
+
+message Filters {
+    int64 page = 1;
+    int64 pageSize = 2;
+    string sort = 3;
+    repeated string sortSafeList = 4;
+}
+
+message Metadata {
+    int64 CurrentPage = 1; 
+	int64 PageSize = 2;   
+	int64 FirstPage = 3;  
+	int64 LastPage  = 4;  
+	int64 TotalRecords= 5;
+}
+
+message Request {
+    Resource resource = 1;
+}
+
+message RequestWithFilters {
+    string jobTitle = 1;
+    string workgroup = 2;
+    string employmentType = 3;
+    string manager = 4;
+    bool active = 5;
+    Filters filters = 6;
+}
+
+
+message Response {
+    string result = 1;
+    Resource resource = 2;
+}
+
+message ArrayResponse {
+    Metadata Metadata = 1;
+    repeated Resource resources= 2;
+}
+
+service ResourceService {
+    rpc InsertResource(Request) returns (Response) {}
+    rpc GetResourceById(Request) returns (Response) {}
+    rpc GetResourceByEmail(Request) returns (Response) {}
+    rpc GetAllResources(RequestWithFilters) returns (ArrayResponse) {}
+    rpc UpdateResource(Request) returns (Response) {}
+}
