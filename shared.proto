@@ -1,0 +1,20 @@
+syntax="proto3";
+
+option go_package="github.com/pso-dev/gomicro-protobuf/pb";
+
+package pb;
+
+message Filters {
+    int64 page = 1;
+    int64 pageSize = 2;
+    string sort = 3;
+    repeated string sortSafeList = 4;
+}
+
+message Metadata {
+    int64 CurrentPage = 1; 
+	int64 PageSize = 2;   
+	int64 FirstPage = 3;  
+	int64 LastPage  = 4;  
+	int64 TotalRecords= 5;
+}

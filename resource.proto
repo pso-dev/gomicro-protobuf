@@ -4,6 +4,8 @@ option go_package="github.com/pso-dev/gomicro-protobuf/pb";
 
 package pb;
 
+import "shared.proto";
+
 message Resource {
     int64 id = 1;
     string name = 2;
@@ -15,26 +17,11 @@ message Resource {
     bool active = 8;
 }
 
-message Filters {
-    int64 page = 1;
-    int64 pageSize = 2;
-    string sort = 3;
-    repeated string sortSafeList = 4;
-}
-
-message Metadata {
-    int64 CurrentPage = 1; 
-	int64 PageSize = 2;   
-	int64 FirstPage = 3;  
-	int64 LastPage  = 4;  
-	int64 TotalRecords= 5;
-}
-
-message Request {
+message ResourceRequest {
     Resource resource = 1;
 }
 
-message RequestWithFilters {
+message ResourceRequestWithFilters {
     string jobTitle = 1;
     string workgroup = 2;
     string employmentType = 3;
@@ -44,20 +31,20 @@ message RequestWithFilters {
 }
 
 
-message Response {
+message ResourceResponse {
     string result = 1;
     Resource resource = 2;
 }
 
-message ArrayResponse {
+message ResourceListResponse {
     Metadata Metadata = 1;
     repeated Resource resources= 2;
 }
 
 service ResourceService {
-    rpc InsertResource(Request) returns (Response) {}
-    rpc GetResourceById(Request) returns (Response) {}
-    rpc GetResourceByEmail(Request) returns (Response) {}
-    rpc GetAllResources(RequestWithFilters) returns (ArrayResponse) {}
-    rpc UpdateResource(Request) returns (Response) {}
+    rpc InsertResource(ResourceRequest) returns (ResourceResponse) {}
+    rpc GetResourceById(ResourceRequest) returns (ResourceResponse) {}
+    rpc GetResourceByEmail(ResourceRequest) returns (ResourceResponse) {}
+    rpc GetAllResources(ResourceRequestWithFilters) returns (ResourceListResponse) {}
+    rpc UpdateResource(ResourceRequest) returns (ResourceResponse) {}
 }

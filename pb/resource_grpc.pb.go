@@ -30,11 +30,11 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ResourceServiceClient interface {
-	InsertResource(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-	GetResourceById(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-	GetResourceByEmail(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-	GetAllResources(ctx context.Context, in *RequestWithFilters, opts ...grpc.CallOption) (*ArrayResponse, error)
-	UpdateResource(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	InsertResource(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error)
+	GetResourceById(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error)
+	GetResourceByEmail(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error)
+	GetAllResources(ctx context.Context, in *ResourceRequestWithFilters, opts ...grpc.CallOption) (*ResourceListResponse, error)
+	UpdateResource(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error)
 }
 
 type resourceServiceClient struct {
@@ -45,8 +45,8 @@ func NewResourceServiceClient(cc grpc.ClientConnInterface) ResourceServiceClient
 	return &resourceServiceClient{cc}
 }
 
-func (c *resourceServiceClient) InsertResource(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *resourceServiceClient) InsertResource(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error) {
+	out := new(ResourceResponse)
 	err := c.cc.Invoke(ctx, ResourceService_InsertResource_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -54,8 +54,8 @@ func (c *resourceServiceClient) InsertResource(ctx context.Context, in *Request,
 	return out, nil
 }
 
-func (c *resourceServiceClient) GetResourceById(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *resourceServiceClient) GetResourceById(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error) {
+	out := new(ResourceResponse)
 	err := c.cc.Invoke(ctx, ResourceService_GetResourceById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (c *resourceServiceClient) GetResourceById(ctx context.Context, in *Request
 	return out, nil
 }
 
-func (c *resourceServiceClient) GetResourceByEmail(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *resourceServiceClient) GetResourceByEmail(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error) {
+	out := new(ResourceResponse)
 	err := c.cc.Invoke(ctx, ResourceService_GetResourceByEmail_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -72,8 +72,8 @@ func (c *resourceServiceClient) GetResourceByEmail(ctx context.Context, in *Requ
 	return out, nil
 }
 
-func (c *resourceServiceClient) GetAllResources(ctx context.Context, in *RequestWithFilters, opts ...grpc.CallOption) (*ArrayResponse, error) {
-	out := new(ArrayResponse)
+func (c *resourceServiceClient) GetAllResources(ctx context.Context, in *ResourceRequestWithFilters, opts ...grpc.CallOption) (*ResourceListResponse, error) {
+	out := new(ResourceListResponse)
 	err := c.cc.Invoke(ctx, ResourceService_GetAllResources_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -81,8 +81,8 @@ func (c *resourceServiceClient) GetAllResources(ctx context.Context, in *Request
 	return out, nil
 }
 
-func (c *resourceServiceClient) UpdateResource(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *resourceServiceClient) UpdateResource(ctx context.Context, in *ResourceRequest, opts ...grpc.CallOption) (*ResourceResponse, error) {
+	out := new(ResourceResponse)
 	err := c.cc.Invoke(ctx, ResourceService_UpdateResource_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -94,11 +94,11 @@ func (c *resourceServiceClient) UpdateResource(ctx context.Context, in *Request,
 // All implementations must embed UnimplementedResourceServiceServer
 // for forward compatibility
 type ResourceServiceServer interface {
-	InsertResource(context.Context, *Request) (*Response, error)
-	GetResourceById(context.Context, *Request) (*Response, error)
-	GetResourceByEmail(context.Context, *Request) (*Response, error)
-	GetAllResources(context.Context, *RequestWithFilters) (*ArrayResponse, error)
-	UpdateResource(context.Context, *Request) (*Response, error)
+	InsertResource(context.Context, *ResourceRequest) (*ResourceResponse, error)
+	GetResourceById(context.Context, *ResourceRequest) (*ResourceResponse, error)
+	GetResourceByEmail(context.Context, *ResourceRequest) (*ResourceResponse, error)
+	GetAllResources(context.Context, *ResourceRequestWithFilters) (*ResourceListResponse, error)
+	UpdateResource(context.Context, *ResourceRequest) (*ResourceResponse, error)
 	mustEmbedUnimplementedResourceServiceServer()
 }
 
@@ -106,19 +106,19 @@ type ResourceServiceServer interface {
 type UnimplementedResourceServiceServer struct {
 }
 
-func (UnimplementedResourceServiceServer) InsertResource(context.Context, *Request) (*Response, error) {
+func (UnimplementedResourceServiceServer) InsertResource(context.Context, *ResourceRequest) (*ResourceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InsertResource not implemented")
 }
-func (UnimplementedResourceServiceServer) GetResourceById(context.Context, *Request) (*Response, error) {
+func (UnimplementedResourceServiceServer) GetResourceById(context.Context, *ResourceRequest) (*ResourceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResourceById not implemented")
 }
-func (UnimplementedResourceServiceServer) GetResourceByEmail(context.Context, *Request) (*Response, error) {
+func (UnimplementedResourceServiceServer) GetResourceByEmail(context.Context, *ResourceRequest) (*ResourceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResourceByEmail not implemented")
 }
-func (UnimplementedResourceServiceServer) GetAllResources(context.Context, *RequestWithFilters) (*ArrayResponse, error) {
+func (UnimplementedResourceServiceServer) GetAllResources(context.Context, *ResourceRequestWithFilters) (*ResourceListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllResources not implemented")
 }
-func (UnimplementedResourceServiceServer) UpdateResource(context.Context, *Request) (*Response, error) {
+func (UnimplementedResourceServiceServer) UpdateResource(context.Context, *ResourceRequest) (*ResourceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateResource not implemented")
 }
 func (UnimplementedResourceServiceServer) mustEmbedUnimplementedResourceServiceServer() {}
@@ -135,7 +135,7 @@ func RegisterResourceServiceServer(s grpc.ServiceRegistrar, srv ResourceServiceS
 }
 
 func _ResourceService_InsertResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(ResourceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,13 +147,13 @@ func _ResourceService_InsertResource_Handler(srv interface{}, ctx context.Contex
 		FullMethod: ResourceService_InsertResource_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServiceServer).InsertResource(ctx, req.(*Request))
+		return srv.(ResourceServiceServer).InsertResource(ctx, req.(*ResourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ResourceService_GetResourceById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(ResourceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -165,13 +165,13 @@ func _ResourceService_GetResourceById_Handler(srv interface{}, ctx context.Conte
 		FullMethod: ResourceService_GetResourceById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServiceServer).GetResourceById(ctx, req.(*Request))
+		return srv.(ResourceServiceServer).GetResourceById(ctx, req.(*ResourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ResourceService_GetResourceByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(ResourceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,13 +183,13 @@ func _ResourceService_GetResourceByEmail_Handler(srv interface{}, ctx context.Co
 		FullMethod: ResourceService_GetResourceByEmail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServiceServer).GetResourceByEmail(ctx, req.(*Request))
+		return srv.(ResourceServiceServer).GetResourceByEmail(ctx, req.(*ResourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ResourceService_GetAllResources_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestWithFilters)
+	in := new(ResourceRequestWithFilters)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,13 +201,13 @@ func _ResourceService_GetAllResources_Handler(srv interface{}, ctx context.Conte
 		FullMethod: ResourceService_GetAllResources_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServiceServer).GetAllResources(ctx, req.(*RequestWithFilters))
+		return srv.(ResourceServiceServer).GetAllResources(ctx, req.(*ResourceRequestWithFilters))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ResourceService_UpdateResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(ResourceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -219,7 +219,7 @@ func _ResourceService_UpdateResource_Handler(srv interface{}, ctx context.Contex
 		FullMethod: ResourceService_UpdateResource_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServiceServer).UpdateResource(ctx, req.(*Request))
+		return srv.(ResourceServiceServer).UpdateResource(ctx, req.(*ResourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
